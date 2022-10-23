@@ -1,0 +1,8 @@
+D:\Repositories\NeMAGUUU\NeMAGUUU\obj\Debug\NeMAGUUU.csproj.AssemblyReference.cache
+D:\Repositories\NeMAGUUU\NeMAGUUU\obj\Debug\NeMAGUUU.csproj.SuggestedBindingRedirects.cache
+D:\Repositories\NeMAGUUU\NeMAGUUU\obj\Debug\NeMAGUUU.csproj.CoreCompileInputs.cache
+D:\Repositories\NeMAGUUU\NeMAGUUU\bin\Debug\NeMAGUUU.exe.config
+D:\Repositories\NeMAGUUU\NeMAGUUU\bin\Debug\NeMAGUUU.exe
+D:\Repositories\NeMAGUUU\NeMAGUUU\bin\Debug\NeMAGUUU.pdb
+D:\Repositories\NeMAGUUU\NeMAGUUU\obj\Debug\NeMAGUUU.exe
+D:\Repositories\NeMAGUUU\NeMAGUUU\obj\Debug\NeMAGUUU.pdb
