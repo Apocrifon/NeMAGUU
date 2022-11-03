@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -45,8 +44,6 @@ namespace NeMAGUUU
             }
             Console.WriteLine();
         }
-
-
     }
 
     class Program
@@ -99,26 +96,33 @@ namespace NeMAGUUU
                 matrix.Matrix[i, i] = 1;
             matrix.PrintMatrix();
             AddSetsToList(sets, lines, matrix.Matrix, size);
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 0; i < sets.Count; i++)
             {
-                for (int j = 0; j < lines.Count; j++)
+                for (int j = 0; j < sets.Count; j++)
                 {
                     if (i == j)
                         continue;
-                    if (lines[j].Contains(lines[i]))
+                    var flag = true;
+                    foreach (var number in sets[j])
                     {
-                        lines.RemoveAt(j);
-                        sets.RemoveAt(j);
+                        if (!sets[i].Contains(number))
+                            flag = false;
+                    }
+                    if (flag)
+                    {
+                        sets.RemoveAt(i);
+                        i--;
+                        break;
                     }
                 }
             }
             PrintSets(sets);
-            //sets = new List<List<int>> { new List<int> { 1, 2, 3 }, new List<int> { 1, 2, 4 }, new List<int> { 7, 8, 9 } };
             var setsSize = sets.Count;
             var counter = new int[setsSize - 1];  // чудо счётчик
             var partOfresult = new List<int>();
             var result = new List<List<int>>();
-            if (!(counter.Length<2))
+            if (counter.Length >= 2)
+            {
                 while (counter[setsSize - 2] < sets[sets.Count - 1].Count)
                 {
                     for (int i = 0; i < sets[0].Count; i++)
@@ -145,6 +149,26 @@ namespace NeMAGUUU
                         }
                     }
                 }
+            }
+            else if (counter.Length == 1)
+            {
+                for (int i = 0; i < sets[0].Count; i++)
+                {
+                    for (int j = 0; j < sets[1].Count; j++)
+                    {
+                        partOfresult = new List<int>();
+                        partOfresult.Add(sets[0][i]);
+                        if (!partOfresult.Contains(sets[1][j]))
+                        {
+                            partOfresult.Add(sets[1][j]);
+
+                        }
+                        result.Add(partOfresult);
+                    }
+                }
+            }
+            else
+                result.Add(sets[0]);
             var totalLines = new List<string>();
             foreach (var set in result)
             {
@@ -159,20 +183,40 @@ namespace NeMAGUUU
             {
                 for (int j = 0; j < totalLines.Count; j++)
                 {
-                    if (string.Compare(totalLines[i], totalLines[j])==0)
-                        {
+                    if ((string.Compare(totalLines[i], totalLines[j]) == 0 && i!=j))
+                    {
                         totalLines.RemoveAt(j);
                         result.RemoveAt(j);
+                        j--;
                     }
                 }
             }
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                for (int j = 0; j < result.Count; j++)
+                {
+                    if (i == j)
+                        continue;
+                    var flag = true;
+                    foreach (var number in result[j])
+                    {
+                        if (!result[i].Contains(number))
+                            flag = false;
+                    }
+                    if (flag)
+                    {
+                        result.RemoveAt(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
+
             foreach (var set in result)
             {
-
-                for (int i = 0; i < set.Count; i++)
-                {
-                    Console.Write(set[i] + " ");
-                }
+                foreach (var item in set)
+                    Console.Write(item + " ");
                 Console.WriteLine();
             }
         }
