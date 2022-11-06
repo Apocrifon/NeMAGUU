@@ -14,10 +14,6 @@ namespace NeMAGUUU
             Matrix = new int[size, size];
             this.size = size;
         }
-        public static void Info()
-        {
-            Console.WriteLine("info ");// write info
-        }
 
         public void SetConnection()
         {
@@ -48,6 +44,14 @@ namespace NeMAGUUU
 
     class Program
     {
+        public static void Info()
+        {
+            Console.WriteLine("Данная программа предназначена для поиска минимального устойчивого внешнего множества в орграфе.");// write info
+            Console.WriteLine("Результат выводить в виде чисел обозначающих номера вершин.");
+            Console.WriteLine("Для получения результата укажите колличество вершин, а затем пары вершин,\n  образующих дуги, где первое число означает начало дуги, а второе конец.");
+            Console.WriteLine("Для выхода напишите -1.");
+        }
+
         public static void PrintSets(List<List<int>> sets)
         {
             for (int j = 0; j < sets.Count; j++)
@@ -84,18 +88,8 @@ namespace NeMAGUUU
             }
         }
 
-        static void Main()
+        private static void Absorption(List<List<int>> sets)
         {
-            var sets = new List<List<int>>();
-            var lines = new List<string>();
-            Console.Write("Укажите колличество вершин в графе: ");
-            var size = int.Parse(Console.ReadLine());
-            var matrix = new Graph(size);
-            matrix.SetConnection();
-            for (int i = 0; i < matrix.Matrix.GetLength(0); i++)
-                matrix.Matrix[i, i] = 1;
-            matrix.PrintMatrix();
-            AddSetsToList(sets, lines, matrix.Matrix, size);
             for (int i = 0; i < sets.Count; i++)
             {
                 for (int j = 0; j < sets.Count; j++)
@@ -116,6 +110,32 @@ namespace NeMAGUUU
                     }
                 }
             }
+        }
+
+        private static void PrintResults(List<List<int>> result)
+        {
+            foreach (var set in result)
+            {
+                foreach (var item in set)
+                    Console.Write(item + " ");
+                Console.WriteLine();
+            }
+        }
+
+        static void Main()
+        {
+            Info();
+            var sets = new List<List<int>>();
+            var lines = new List<string>();
+            Console.Write("Укажите колличество вершин в графе: ");
+            var size = int.Parse(Console.ReadLine());
+            var matrix = new Graph(size);
+            matrix.SetConnection();
+            for (int i = 0; i < matrix.Matrix.GetLength(0); i++)
+                matrix.Matrix[i, i] = 1;
+            matrix.PrintMatrix();
+            AddSetsToList(sets, lines, matrix.Matrix, size);
+            Absorption(sets);
             PrintSets(sets);
             var setsSize = sets.Count;
             var counter = new int[setsSize - 1];  // чудо счётчик
@@ -168,7 +188,9 @@ namespace NeMAGUUU
                 }
             }
             else
+            {
                 result.Add(sets[0]);
+            }
             var totalLines = new List<string>();
             foreach (var set in result)
             {
@@ -183,7 +205,7 @@ namespace NeMAGUUU
             {
                 for (int j = 0; j < totalLines.Count; j++)
                 {
-                    if ((string.Compare(totalLines[i], totalLines[j]) == 0 && i!=j))
+                    if ((string.Compare(totalLines[i], totalLines[j]) == 0 && i != j))
                     {
                         totalLines.RemoveAt(j);
                         result.RemoveAt(j);
@@ -191,35 +213,9 @@ namespace NeMAGUUU
                     }
                 }
             }
-
-            for (int i = 0; i < result.Count; i++)
-            {
-                for (int j = 0; j < result.Count; j++)
-                {
-                    if (i == j)
-                        continue;
-                    var flag = true;
-                    foreach (var number in result[j])
-                    {
-                        if (!result[i].Contains(number))
-                            flag = false;
-                    }
-                    if (flag)
-                    {
-                        result.RemoveAt(i);
-                        i--;
-                        break;
-                    }
-                }
-            }
-
-            foreach (var set in result)
-            {
-                foreach (var item in set)
-                    Console.Write(item + " ");
-                Console.WriteLine();
-            }
-        }
+            Absorption(result);
+            PrintResults(result);
+        }     
     }
 }
     
